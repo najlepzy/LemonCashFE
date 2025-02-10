@@ -1,0 +1,45 @@
+:root {
+  --primary-color: #806cf2;
+  --primary-color-hover: #806cf2a4;
+  --background-color: #ebd9d993;
+  --secondary-color: #555;
+  --border-color: #ccc;
+  --modal-overlay-bg: rgba(50, 50, 50, 0.6);
+  --modal-border-color: #ddd;
+  --modal-cancel-bg: #aaa;
+  --modal-cancel-hover: #888;
+  --collaborator-bg: #6c4db3;
+  --tooltip-bg: #806cf2;
+  --white: #fff;
+  --column-bg: #f2f2f2;
+  --muted-text: #777;
+  --completed-bg: #e0e0e0;
+
+  --border-radius: 6px;
+  --padding-standard: 0.5rem 1rem;
+  --transition-standard: background 0.3s ease-in-out;
+
+  --delete-button-bg: #ff6b6b;
+  --delete-button-bg-hover: #ff4c4c;
+  --accept-button-bg: #28a745;
+  --reject-button-bg: #dc3545;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  font-family: "Poppins", sans-serif;
+  overflow-x: hidden;
+}
