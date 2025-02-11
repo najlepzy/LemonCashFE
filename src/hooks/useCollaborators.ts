@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { showToast } from "@config/collabToast";
-
 import {
   fetchCollaborators,
   createCollaborator,
@@ -36,7 +35,9 @@ const useCollaborators = () => {
 
         setCollaborators(collaboratorsArray);
       } catch (error) {
-        console.error("Error fetching collaborators:", error);
+        if (process.env.NODE_ENV !== "test") {
+          console.error("Error fetching collaborators:", error);
+        }
         showToast("error", "Error fetching collaborators");
       }
     };
@@ -53,7 +54,9 @@ const useCollaborators = () => {
       await createCollaborator({ identifier: identifier.trim() });
       showToast("success", "Invitation sent to the collaborator!");
     } catch (error) {
-      console.error("Error adding collaborator:", error);
+      if (process.env.NODE_ENV !== "test") {
+        console.error("Error adding collaborator:", error);
+      }
       showToast("error", "Error adding collaborator");
     }
   };
@@ -64,7 +67,9 @@ const useCollaborators = () => {
       setCollaborators((prev) => prev.filter((collab) => collab.id !== id));
       showToast("success", "Collaborator removed successfully");
     } catch (error) {
-      console.error("Error removing collaborator:", error);
+      if (process.env.NODE_ENV !== "test") {
+        console.error("Error removing collaborator:", error);
+      }
       showToast("error", "Error removing collaborator");
     }
   };

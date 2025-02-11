@@ -33,4 +33,6 @@ export const SIGNUP_TEXT = {
   PLACEHOLDER_EMAIL: "Enter your email",
   PLACEHOLDER_PASSWORD: "Enter your password",
   SUBMIT: "Register",
+  PASSWORD_ERROR:
+    "Password must have at least one number, one lowercase letter, one uppercase letter, and one special character.",
 };

@@ -1,25 +1,25 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { MemoryRouter } from "react-router-dom";
-import { AuthProvider } from "@context/authContext/authContext";
-
 import { SIGNUP_TEXT } from "@utils/authConstants";
+import { AuthProvider } from "@context/authContext/authContext";
 import { SignUp } from "@components/index";
+
+// Definimos el spy para onSubmit (handleSignUpSubmit)
+const handleSignUpSubmit = vi.fn();
 
 vi.mock("@hooks/index", () => ({
   useAuthRedirect: () => {},
 }));
 
 vi.mock("@context/authContext/authContext", () => ({
-  AuthProvider: ({ children }: { children: React.ReactNode }) => (
-    <>{children}</>
-  ),
+  AuthProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   useAuthContext: () => ({
     isSignIn: false,
     toggleAuthMode: vi.fn(),
     handleSignInSubmit: vi.fn(),
-    handleSignUpSubmit: vi.fn(),
     currentTitle: SIGNUP_TEXT.TITLE,
     currentButton: SIGNUP_TEXT.SUBMIT,
     toggleButtonAriaLabel: "Switch mode",
@@ -30,17 +30,19 @@ vi.mock("@context/authContext/authContext", () => ({
 }));
 
 describe("SignUp", () => {
-  const onSubmit = vi.fn();
-  beforeEach(() => onSubmit.mockClear());
+  beforeEach(() => {
+    handleSignUpSubmit.mockClear();
+  });
 
   it("renders SignUp form", () => {
     const { container } = render(
       <MemoryRouter>
         <AuthProvider>
-          <SignUp onSubmit={onSubmit} />
+          <SignUp onSubmit={handleSignUpSubmit} />
         </AuthProvider>
       </MemoryRouter>
     );
+
     expect(screen.getByText(SIGNUP_TEXT.TITLE)).toBeInTheDocument();
     expect(
       screen.getByPlaceholderText(SIGNUP_TEXT.PLACEHOLDER_USERNAME)
@@ -57,14 +59,16 @@ describe("SignUp", () => {
     expect(container.querySelector("form")).toBeTruthy();
   });
 
-  it("calls onSubmit with username, email, password on form submission", () => {
-    const { container } = render(
+  it("calls handleSignUpSubmit with username, email, password on form submission", async () => {
+    render(
       <MemoryRouter>
         <AuthProvider>
-          <SignUp onSubmit={onSubmit} />
+          <SignUp onSubmit={handleSignUpSubmit} />
         </AuthProvider>
       </MemoryRouter>
     );
+
+    const user = userEvent.setup();
     const usernameInput = screen.getByPlaceholderText(
       SIGNUP_TEXT.PLACEHOLDER_USERNAME
     );
@@ -74,15 +78,25 @@ describe("SignUp", () => {
     const passwordInput = screen.getByPlaceholderText(
       SIGNUP_TEXT.PLACEHOLDER_PASSWORD
     );
-    fireEvent.change(usernameInput, { target: { value: "TestUser" } });
-    fireEvent.change(emailInput, { target: { value: "test@example.com" } });
-    fireEvent.change(passwordInput, { target: { value: "password" } });
-    const form = container.querySelector("form");
-    if (form) fireEvent.submit(form);
-    expect(onSubmit).toHaveBeenCalledWith(
-      "TestUser",
-      "test@example.com",
-      "password"
-    );
+
+    // Simulamos que el usuario escribe en los campos
+    await user.type(usernameInput, "TestUser");
+    await user.type(emailInput, "test@example.com");
+    await user.type(passwordInput, "password");
+
+    // Simulamos el click en el botón de submit
+    const submitButton = screen.getByRole("button", {
+      name: SIGNUP_TEXT.SUBMIT,
+    });
+    await user.click(submitButton);
+
+    // Esperamos que se llame la función onSubmit con los argumentos correspondientes
+    await waitFor(() => {
+      expect(handleSignUpSubmit).toHaveBeenCalledWith(
+        "TestUser",
+        "test@example.com",
+        "password"
+      );
+    });
   });
 });

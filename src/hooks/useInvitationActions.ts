@@ -25,7 +25,10 @@ const useInvitationActions = ({
         `You have accepted the invitation from ${collabInvite.ownerName}. You are now a collaborator and can move tasks to update their status.`
       );
     } catch (error) {
-      console.error("Error accepting invitation:", error);
+      // Solo se imprime el error si NO estamos en ambiente de test.
+      if (process.env.NODE_ENV !== "test") {
+        console.error("Error accepting invitation:", error);
+      }
       showToast("error", "Failed to accept the invitation");
     }
   }, [
@@ -42,7 +45,9 @@ const useInvitationActions = ({
       setCollabInvite(null);
       showToast("info", "You have rejected the invitation");
     } catch (error) {
-      console.error("Error rejecting invitation:", error);
+      if (process.env.NODE_ENV !== "test") {
+        console.error("Error rejecting invitation:", error);
+      }
       showToast("error", "Failed to reject the invitation");
     }
   }, [collabInvite, setCollabInvite]);
