@@ -1,8 +1,8 @@
-
 # Task Manager Frontend
 
 Una aplicación de gestión de tareas colaborativa desarrollada en React con TypeScript, optimizada para dispositivos móviles con un diseño responsive. Ofrece autenticación segura y un tablero Kanban para la colaboración en tiempo real.
 
+## El archivo .env esta presente en root y accesible para pruebas (no incluido en .gitignore).
 ## Características Principales
 
 ### 🔐 Autenticación
@@ -66,6 +66,3 @@ La aplicación sigue un enfoque mobile-first para garantizar una experiencia flu
 
 Implementación de flujos de autenticación seguros y protección contra vulnerabilidades comunes. Gestión de sesiones con tokens JWT.
 
-## Conclusión
-
-Una herramienta versátil y escalable para mejorar la productividad de equipos mediante una experiencia intuitiva y colaboración en tiempo real.
