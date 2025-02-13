@@ -41,7 +41,7 @@ sudo apt update
 sudo apt install -y nodejs npm
 
 # Clonar el repositorio
-git clone https://mirepo
+git clone https://github.com/najlepzy/LemonCashFE.git
 cd LEMONFE
 
 # Instalar dependencias
